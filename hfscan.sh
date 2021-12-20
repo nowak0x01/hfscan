@@ -27,13 +27,12 @@ export PATH="/opt:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:$
 verify()
 {
 	local check=$1
-
+	
 	if [ "$(type -p $check)" = "" ];then
 
 		printf "\n\e[1;31mERROR:\e[1;37m $check command \e[0mnot found in\e[1;37m $PATH \e[0m\n\n"
 		export PATH="$__defaultPATH"
 		exit 1
-
 	fi
 }
 
@@ -48,7 +47,6 @@ case "$1" in
 			printf "\n$0 %s [dir/files] [wordlist] [target]\n\n" "$1"
 			export PATH="$__defaultPATH"
 			exit 1
-
 		fi
 
 		# [ DEFAULT ] - EXTENSIONS='.yml,.yaml,.passwd,.conf,.php,.js,.html,.save,.swp,.bkp,.bak,.sql,.db,.ovpn,.md,.env,~,.json,.old,.log,.tar,.tar.gz,.gz,.tgz,.settings,.zip,.rar,.backup,.out,.info,.main,.master,.local,.inf,.git,.disabled,.dev,.default,.cnf,.cgi,.cer,.bin,.tmp,.temp'
@@ -69,10 +67,10 @@ case "$1" in
 			printf "\n\e[1;37m{#} TARGET:\e[1;32m $4 \e[1;37m| WORDLIST:\e[1;32m $3 \e[1;37m| METHOD:\e[1;32m (FILES - DEFAULT) {#}\e[0m\n\n"
 			ffuf -ic -w $3 -u $4 -H "User-Agent: $UAGENT" -c -e "$EXTENSIONS" -t $THREADS --timeout 16 -mc all -ac
 
-			cut -d'.' -f1 $3 | sort -u > /var/tmp/files-wordlist-changed.recon
-			printf "\n\e[1;37m{#} TARGET:\e[1;32m $4 \e[1;37m| WORDLIST:\e[1;32m /var/tmp/files-wordlist-changed.recon \e[1;37m| METHOD:\e[1;32m (FILES - CHANGED) #}\e[0m\n\n"
-			ffuf -ic -w /var/tmp/files-wordlist-changed.recon -u $4 -H "User-Agent: $UAGENT" -c -e "$EXTENSIONS" -t $THREADS --timeout 16 -mc all -ac
-
+			cut -d'.' -f1 $3 | sort -u > /var/tmp/files-wordlist.hfscan
+			printf "\n\e[1;37m{#} TARGET:\e[1;32m $4 \e[1;37m| WORDLIST:\e[1;32m /var/tmp/files-wordlist.hfscan \e[1;37m| METHOD:\e[1;32m (FILES - CHANGED) #}\e[0m\n\n"
+			ffuf -ic -w /var/tmp/files-wordlist.hfscan -u $4 -H "User-Agent: $UAGENT" -c -e "$EXTENSIONS" -t $THREADS --timeout 16 -mc all -ac
+			
 		fi
 
 		;;
@@ -82,11 +80,10 @@ case "$1" in
 		verify nmap
 
 		if [ "$3" == "" ];then
-
+		
 			printf "\n$0 %s [ctf/world] [target]\n\n" "$1"
 			export PATH="$__defaultPATH"
 			exit 1
-
 		fi
 
 		if [[ "$2" == "ctf" || "$2" == "CTF" ]];then
@@ -111,13 +108,13 @@ case "$1" in
 			UDP_scan="-sUV -Pn -T2 -D RND:126 -g 80 -p-"
 
 			printf "\n\e[1;37m{#} starting the scan \e[1;32m(WORLD - syn) \e[1;37m{#}\n\n"
-			$SYN_scan $3
+			nmap $SYN_scan $3
 
 			printf "\n\e[1;37m{#} starting the scan \e[1;32m(WORLD - udp) \e[1;37m{#}\n\n"
-			$UDP_scan $3
+			nmap $UDP_scan $3
 
 			printf "\n\e[1;37m{#} starting the scan \e[1;32m(WORLD - tcp) \e[1;37m{#}\n\n"
-			$TCP_scan $3
+			nmap $TCP_scan $3
 
 		fi
 
@@ -127,31 +124,30 @@ case "$1" in
 
 		if [ "$3" == "" ];then
 
-			printf "\n$0 %s [wordlist] [common words ( separated by ',' )]\n
+			printf "\n$0 %s [wordlist] [common words (separated by ',')]\n
 	{example}\n
-		$0 %s ./large-files.txt 'corpsec,sec,corp'
+		$0 %s ./files-wordlist.txt 'corpsec,sec,corp'
 \n" "$1" "$1"
 
 			export PATH="$__defaultPATH"
 			exit 1
-
 		fi
 
 		function add_word()
 		{
 			local argv=$1
-			printf "%s$1%s\n" "$_generate_" "$(head -n$_quant_ recon.words.quant | tail -1)" >> custom-wordlist.recon
-			printf "%s$1%s\n" "$(head -n$_quant_ recon.words.quant | tail -1)" "$_generate_" >> custom-wordlist.recon
+			printf "%s$1%s\n" "$_generate_" "$(head -n$_quant_ hfscan-words.quant | tail -1)" >> $PWD/custom-wordlist.hfscan
+			printf "%s$1%s\n" "$(head -n$_quant_ hfscan-words.quant | tail -1)" "$_generate_" >> $PWD/custom-wordlist.hfscan
 		}
 
-		rm -f custom-wordlist.recon
-		printf $3 > recon.words
-		tr ',' '\n' < recon.words > recon.words.quant
+		rm -f $PWD/custom-wordlist.hfscan
+		printf $3 > $PWD/hfscan.words
+		tr ',' '\n' < $PWD/hfscan.words > $PWD/hfscan-words.quant
 
 		spin='-\|/'
 		printf "\n\e[1;32m{+}\e[1;37m Generating the custom Wordlist \e[1;32m{+}\e[1;37m\n\n"
 
-		for _quant_ in $(seq 1 `wc -l recon.words.quant|cut -d' ' -f1`);do
+		for _quant_ in $(seq 1 `wc -l $PWD/hfscan-words.quant | cut -d' ' -f1`);do
 
 			for _generate_ in $(cut -d'.' -f1 $2);do
 
@@ -167,9 +163,9 @@ case "$1" in
 		done
 
 		printf "\n\e[1;32m{+}\e[1;37m Custom Wordlist generated! \e[1;32m{+}\e[1;37m\n"
-		printf "\e[1;32m%s \e[0m\n\n" "`ls -gG $PWD/custom-wordlist.recon | awk '{print $1, $3, $6, $7}'`"
+		printf "\e[1;32m%s \e[0m\n\n" "`ls -gG $PWD/custom-wordlist.hfscan | awk '{print $1, $3, $6, $7}'`"
 
-		rm -f recon.words.quant recon.words
+		rm -f $PWD/hfscan-words.quant $PWD/hfscan.words
 
 		;;
 
@@ -221,7 +217,7 @@ case "$1" in
 
 			printf "\n\n\e[1;32m:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\e[0m\n\n"
 
-			rm -f __dns.records
+			rm -f $PWD/__dns.records
 
 		fi
 
@@ -305,8 +301,9 @@ case "$1" in
 			printf "\n$0 $1 [host]\n\n"
 
 		else
-
-			subfinder -all -recursive -nW -o hfscan_subdomains.subfinder -d $2
+			printf "\n\e[1;32m:::::::::::::::::::::::::::::::::::::::\e[0m\n\n"
+			subfinder -all -silent -recursive -nW -o hfscan_subdomains.subfinder -d $2
+			printf "\n\e[1;32m:::::::::::::::::::::::::::::::::::::::\e[0m\n\n"
 
 		fi
 
