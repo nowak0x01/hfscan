@@ -22,6 +22,8 @@ HFscan is a open-source project and multi-purpose Infra/Business Reconnaissance 
 - CTF vHosts Discovery
 - Subfinder subdomains passive Discovery
 - Httpx Web tecnologies running Discovery
+- Discovery Parameter of a File
+- Discovery Vulnerabilities ( SSRF / Command-Execution (blind/reflected) / PATH TRANSVERSAL / LFI ) on Parameters of a File
 
 
 # Installation
