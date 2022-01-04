@@ -113,7 +113,7 @@ case "$TheFather_Of_The_G0ds_Kirito" in
 
 			printf "\n$prog_name $TheFather_Of_The_G0ds_Kirito (wordlist) (words {separated by: ','})\n
 	{example}\n
-		$0 $TheFather_Of_The_G0ds_Kirito ./files-wordlist.txt 'banking,corporation,bank'
+		$prog_name $TheFather_Of_The_G0ds_Kirito ./files-wordlist.txt 'banking,corporation,bank'
 \n"
 			exit 1
 		fi
