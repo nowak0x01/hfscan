@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img src="https://user-images.githubusercontent.com/96009982/146700117-c0fae622-091b-427e-bde0-81c4efd15ac6.png" width="200px"></a>
+  <img src="https://user-images.githubusercontent.com/96009982/146700117-c0fae622-091b-427e-bde0-81c4efd15ac6.png" width="500px"></a>
   <br>
 </h1>
 
@@ -18,12 +18,12 @@ HFscan is a open-source project and multi-purpose Infra/Business Reconnaissance 
 - DNS lookups
 - Nmap CTF/World scans
 - Host DNS Zone-transfer
-- ffuf Directories/Files Discovery with common extensions
-- CTF vHosts Discovery
+- FFUF Directories/Files Discovery with common extensions
+- vHosts Discovery
 - Subfinder subdomains passive Discovery
 - Httpx Web tecnologies running Discovery
-- Discovery Parameter of a File
-- Discovery Vulnerabilities ( SSRF / Command-Execution (blind/reflected) / PATH TRANSVERSAL / LFI ) on Parameters of a File
+- Discovery File Parameters
+- Discovery Vulnerabilities ( Command-Execution (Blind) / Path-Traversal / File-Inclusion ) on Parameters
 
 
 # Installation
@@ -35,8 +35,8 @@ chmod 0755 hfscan.sh
 ./hfscan.sh --usage
 ```
 
-<h1 align="center">
-  <img src="https://user-images.githubusercontent.com/96009982/146700163-0cf8b9d4-4092-4817-9968-ddf16683f33b.png" width="700px"></a>
+<h1>
+  <img src="https://user-images.githubusercontent.com/96009982/147999333-4d858b7c-f2f3-41ba-8a53-e85fae80b863.png" width="700px"></a>
   <br>
 </h1>
 
@@ -44,8 +44,8 @@ chmod 0755 hfscan.sh
 
 # Usage
 
-<h1 align="center">
-  <img src="https://user-images.githubusercontent.com/96009982/146700169-01e49b9f-1f9d-4dd7-a912-82cb0ecb306f.png" width="700px"></a>
+<h1>
+  <img src="https://user-images.githubusercontent.com/96009982/147999980-4eac1b44-85d3-4474-95c2-09fa21d23306.png" width="700px"></a>
   <br>
 </h1>
 
@@ -56,3 +56,4 @@ chmod 0755 hfscan.sh
 - Ffuf: https://github.com/ffuf/ffuf
 - Subfinder: https://github.com/projectdiscovery/subfinder
 - Host: dnsutils
+- Curl: https://github.com/curl/curl
