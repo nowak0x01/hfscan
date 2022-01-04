@@ -27,7 +27,8 @@ $prog_name ({program}) ({options})
 	$prog_name parameters +options+
 \n"
 
-export PATH="/opt:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:$(grep $USER /etc/passwd | cut -d':' -f6)/go:$(grep $USER /etc/passwd | cut -d':' -f6)/local:$(grep $USER /etc/passwd | cut -d':' -f6):$PATH"
+export HOME=$(grep $USER /etc/passwd | cut -d':' -f6)
+export PATH="/opt:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:${HOME}/go:${HOME}/local:${HOME}:$PATH"
 
 verify()
 {
