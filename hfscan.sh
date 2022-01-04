@@ -100,7 +100,6 @@ case "$TheFather_Of_The_G0ds_Kirito" in
 			nmap $TCP_scan $3
 			printf "\n\e[1;37m=> starting the scan \e[1;32m(WORLD - udp) \e[1;37m<=\n\n"
 			nmap $UDP_scan $3
-
 		fi
 		;;
 
@@ -110,7 +109,7 @@ case "$TheFather_Of_The_G0ds_Kirito" in
 
 			printf "\n$0 $TheFather_Of_The_G0ds_Kirito (wordlist) (words {separated by: ','})\n
 	{example}\n
-		$0 $TheFather_Of_The_G0ds_Kirito ./files-wordlist.txt 'corpsec, sec, corp'
+		$0 $TheFather_Of_The_G0ds_Kirito ./files-wordlist.txt 'banking,corporation,bank'
 \n"
 			exit 1
 		fi
@@ -299,7 +298,7 @@ case "$TheFather_Of_The_G0ds_Kirito" in
 					{
 						echo -e "\n\e[1;37m=> TARGET:\e[1;32m $3 \e[1;37m| PAYLOAD:\e[1;32m $1 \e[1;37m| METHOD:\e[1;32m GET \e[1;37m<=\e[0m\n"
 
-						if [[ "$var" == "BLIND" || "$var" == "blind" ]];then
+						if [[ "$TheMan_TheBeast_HeIs_R3tr074" == "BLIND" || "$TheMan_TheBeast_HeIs_R3tr074" == "blind" ]];then
 							ffuf -s -mt '<8000' -ic -w $2 -u $3?FUZZ=$1 -H "User-Agent: $UAGENT" -c -t $THREADS --timeout 50 -mc all -ac
 						else
 							ffuf -s -ic -w $2 -u $3?FUZZ=$1 -H "User-Agent: $UAGENT" -c -t $THREADS --timeout 50 -mc all -ac
