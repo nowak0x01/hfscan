@@ -120,20 +120,18 @@ case "$TheFather_Of_The_G0ds_Kirito" in
 
 		function add_char()
 		{
-			printf "%s$1%s\n" "$_generate_" "$(head -n$_quant_ hfscan-words.quant | tail -1)" >> custom-wordlist.hfscan
-			printf "%s$1%s\n" "$(head -n$_quant_ hfscan-words.quant | tail -1)" "$_generate_" >> custom-wordlist.hfscan
+			printf "%s$1%s\n" "$_generate_" "$(head -n$_quant_ <<<"$hfscan_words_quant" | tail -1)" >> custom-wordlist.hfscan
+			printf "%s$1%s\n" "$(head -n$_quant_ <<<"$hfscan_words_quant" | tail -1)" "$_generate_" >> custom-wordlist.hfscan
 		}
 
 		rm -f custom-wordlist.hfscan
-		printf $3 > hfscan.words
-		tr ',' '\n' < hfscan.words > hfscan-words.quant
-		echo >> hfscan-words.quant
+		hfscan_words_quant=$(tr ',' '\n' <<< "$3")
 
 		spin='-\|/'
 
 		printf "\n\e[1;32m=>\e[1;37m Generating the custom Wordlist \e[1;32m<=\e[1;37m\n\n"
-
-		for _quant_ in $(seq 1 `wc -l hfscan-words.quant | cut -d' ' -f1`);do
+		count_words=$(wc -l <<<"$hfscan_words_quant" | cut -d' ' -f1)
+		for _quant_ in $(seq 1 $count_words);do
 			for _generate_ in $(cut -d'.' -f1 $2);do
 
 				add_char -
@@ -147,8 +145,6 @@ case "$TheFather_Of_The_G0ds_Kirito" in
 
 		printf "\n\e[1;32m=>\e[1;37m Custom Wordlist generated! \e[1;32m<=\e[1;37m\n"
 		printf "\e[1;32m%s \e[0m\n\n" "`ls -gG custom-wordlist.hfscan | awk '{print $1, $3, $6, $7}'`"
-
-		rm -f hfscan-words.quant hfscan.words
 		;;
 
 	'ZN'|'zn'|'zonetransfer'|'ZONETRANSFER')
