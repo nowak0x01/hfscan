@@ -3,7 +3,7 @@
 ############################## Gr33tz: R3tr0 | Kirito
 # */ script author: nowak */ #
 # */  the recon is a art  */ # /* https://discord.gg/PePM2NR5zS ~/
-#    */   v1.2.5-dev   /*    # /~ https://github.com/nowak0x01 */
+#    */   v1.2.6-dev   /*    # /~ https://github.com/nowak0x01 */
 # $/  hackingforce family #/ #
 ##############################
 
@@ -113,25 +113,27 @@ case "$TheFather_Of_The_G0ds_Kirito" in
 
 			printf "\n$prog_name $TheFather_Of_The_G0ds_Kirito (wordlist) (words {separated by: ','})\n
 	{example}\n
-		$prog_name $TheFather_Of_The_G0ds_Kirito ./files-wordlist.txt 'corpsec, sec, corp'
+		$0 $TheFather_Of_The_G0ds_Kirito ./files-wordlist.txt 'banking,corporation,bank'
 \n"
 			exit 1
 		fi
 
 		function add_char()
 		{
-			printf "%s$1%s\n" "$_generate_" "$(head -n$_quant_ <<<"$hfscan_words_quant" | tail -1)" >> custom-wordlist.hfscan
-			printf "%s$1%s\n" "$(head -n$_quant_ <<<"$hfscan_words_quant" | tail -1)" "$_generate_" >> custom-wordlist.hfscan
+			printf "%s$1%s\n" "$_generate_" "$(head -n$_quant_ hfscan-words.quant | tail -1)" >> custom-wordlist.hfscan
+			printf "%s$1%s\n" "$(head -n$_quant_ hfscan-words.quant | tail -1)" "$_generate_" >> custom-wordlist.hfscan
 		}
 
 		rm -f custom-wordlist.hfscan
-		hfscan_words_quant=$(tr ',' '\n' <<< "$3")
+		printf $3 > hfscan.words
+		tr ',' '\n' < hfscan.words > hfscan-words.quant
+		echo >> hfscan-words.quant
 
 		spin='-\|/'
 
 		printf "\n\e[1;32m=>\e[1;37m Generating the custom Wordlist \e[1;32m<=\e[1;37m\n\n"
-		count_words=$(wc -l <<<"$hfscan_words_quant" | cut -d' ' -f1)
-		for _quant_ in $(seq 1 $count_words);do
+
+		for _quant_ in $(seq 1 `wc -l hfscan-words.quant | cut -d' ' -f1`);do
 			for _generate_ in $(cut -d'.' -f1 $2);do
 
 				add_char -
@@ -145,6 +147,8 @@ case "$TheFather_Of_The_G0ds_Kirito" in
 
 		printf "\n\e[1;32m=>\e[1;37m Custom Wordlist generated! \e[1;32m<=\e[1;37m\n"
 		printf "\e[1;32m%s \e[0m\n\n" "`ls -gG custom-wordlist.hfscan | awk '{print $1, $3, $6, $7}'`"
+
+		rm -f hfscan-words.quant hfscan.words
 		;;
 
 	'ZN'|'zn'|'zonetransfer'|'ZONETRANSFER')
@@ -245,7 +249,6 @@ case "$TheFather_Of_The_G0ds_Kirito" in
 		rm -f vhosts.$2 vhosts.$2.size vhosts.$2.valids vhosts.$2_curl
 		;;
 
-
 	'subdomain'|'subdomains'|'SUBDOMAIN'|'SUBDOMAINS'|'sub'|'SUB')
 
 		verify subfinder
@@ -257,7 +260,7 @@ case "$TheFather_Of_The_G0ds_Kirito" in
 			printf "\n\e[1;32m:::::::::::::::::::::::::::::::::::::::\e[0m\n\n"
 		fi
 		;;
-
+		
 	'web-tecnology'|'web'|'WEB'|'WEB-TECNOLOGY'|'httpx'|'HTTPX')
 
 		verify httpx
