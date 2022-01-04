@@ -10,18 +10,21 @@
 TheFather_Of_The_G0ds_Kirito=$1
 TheMan_TheBeast_HeIs_R3tr074=$6
 
-HELP="
-$0 ({program}) ({options})
+# regex to clean "/" and "."
+prog_name=${0##*/}
 
-	$0 ffuf +options+
-	$0 nmap +options+
-	$0 wordgen +options+
-	$0 zonetransfer +options+
-	$0 dnslookup +options+
-	$0 vhosts +options+
-	$0 subdomains +options+
-	$0 web-tecnology +options+
-	$0 parameters +options+
+HELP="
+$prog_name ({program}) ({options})
+
+	$prog_name ffuf +options+
+	$prog_name nmap +options+
+	$prog_name wordgen +options+
+	$prog_name zonetransfer +options+
+	$prog_name dnslookup +options+
+	$prog_name vhosts +options+
+	$prog_name subdomains +options+
+	$prog_name web-tecnology +options+
+	$prog_name parameters +options+
 \n"
 
 export PATH="/opt:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:$(grep $USER /etc/passwd | cut -d':' -f6)/go:$(grep $USER /etc/passwd | cut -d':' -f6)/local:$(grep $USER /etc/passwd | cut -d':' -f6):$PATH"
@@ -40,7 +43,7 @@ case "$TheFather_Of_The_G0ds_Kirito" in
 
 		verify ffuf
 		if [ "$4" == "" ];then
-			printf "\n$0 %s (dir/files) (wordlist) (target) +more options+\n\n" "$TheFather_Of_The_G0ds_Kirito"
+			printf "\n$prog_name %s (dir/files) (wordlist) (target) +more options+\n\n" "$TheFather_Of_The_G0ds_Kirito"
 			exit 1
 		fi
 
@@ -71,7 +74,7 @@ case "$TheFather_Of_The_G0ds_Kirito" in
 
 		verify nmap
 		if [ "$3" == "" ];then
-			printf "\n$0 %s (ctf/world) (target)\n\n" "$TheFather_Of_The_G0ds_Kirito"
+			printf "\n$prog_name %s (ctf/world) (target)\n\n" "$TheFather_Of_The_G0ds_Kirito"
 			exit 1
 		fi
 
@@ -107,9 +110,9 @@ case "$TheFather_Of_The_G0ds_Kirito" in
 
 		if [ "$3" == "" ];then
 
-			printf "\n$0 $TheFather_Of_The_G0ds_Kirito (wordlist) (words {separated by: ','})\n
+			printf "\n$prog_name $TheFather_Of_The_G0ds_Kirito (wordlist) (words {separated by: ','})\n
 	{example}\n
-		$0 $TheFather_Of_The_G0ds_Kirito ./files-wordlist.txt 'banking,corporation,bank'
+		$prog_name $TheFather_Of_The_G0ds_Kirito ./files-wordlist.txt 'corpsec, sec, corp'
 \n"
 			exit 1
 		fi
@@ -151,7 +154,7 @@ case "$TheFather_Of_The_G0ds_Kirito" in
 
 			verify host
 			if [ $# -ne 2 ];then
-				printf "\n$0 $TheFather_Of_The_G0ds_Kirito [host]\n\n"
+				printf "\n$prog_name $TheFather_Of_The_G0ds_Kirito [host]\n\n"
 			else
 				printf "\n\e[0m\e[1;32m=> \e[1;37mName Servers \e[1;32m<=\e[0m\n\n";host -t ns $2|cut -d" " -f4
 				printf "\n\e[1;32m::::::::::::::::::::::::::::::::::\n"
@@ -168,7 +171,7 @@ case "$TheFather_Of_The_G0ds_Kirito" in
 
 		verify host
 		if [ $# -ne 2 ];then
-			printf "\n$0 $TheFather_Of_The_G0ds_Kirito [host]\n\n"
+			printf "\n$prog_name $TheFather_Of_The_G0ds_Kirito [host]\n\n"
 		else
 			printf 'A\nAAAA\nAFSDB\nAPL\nCAA\nCDNSKEY\nCDS\nCERT\nCNAME\nCSYNC\nDHCID\nDLV\nDNAME\nDNSKEY\nDS\nEUI48\nEUI64\nHINFO\nHIP\nIPSECKEY\nKEY\nKX\nLOC\nMX\nNAPTR\nNS\nNSEC\nNSEC3\nNSEC3PARAM\nOPENPGPKEY\nPTR\nRRSIG\nRP\nSIG\nSMIMEA\nSOA\nSRV\nSSHFP\nTA\nTKEY\nTLSA\nTSIG\nTXT\nURI\nZONEMD\nMD\nMF\nMAILA\nMB\nMG\nMR\nMINFO\nMAILB\nWKS\nNULL\nA6\nNXT\nKEY\nSIG\nRP\nX25\nISDN\nRT\nNSAP\nNSAP-PTR\nPX\nEID\nNIMLOC\nATMA\nAPL\nSINK\nGPOS\nUINFO\nUID\nGID\nUNSPEC\nSPF\nNINFO\nRKEY\nTALINK\nNID\nL32\nL64\nLP\nDOA' > __dns.records
 			printf "\n\e[1;32m:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\e[0m\n\n"
@@ -191,7 +194,7 @@ case "$TheFather_Of_The_G0ds_Kirito" in
 		THREADS='110'
 
 		if [ $# -ne 5 ];then
-			printf "\n$0 $TheFather_Of_The_G0ds_Kirito [host] [wordlist] [http/https] [ip]\n\n"
+			printf "\n$prog_name $TheFather_Of_The_G0ds_Kirito [host] [wordlist] [http/https] [ip]\n\n"
 
 		elif [ "$(id -u)" != "0" ];then
 			printf "\n\e[1;31mERROR:\e[0m only root!\n\n"
@@ -250,7 +253,7 @@ case "$TheFather_Of_The_G0ds_Kirito" in
 
 		verify subfinder
 		if [ $# -ne 2 ];then
-			printf "\n$0 $TheFather_Of_The_G0ds_Kirito [host]\n\n"
+			printf "\n$prog_name $TheFather_Of_The_G0ds_Kirito [host]\n\n"
 		else
 			printf "\n\e[1;32m:::::::::::::::::::::::::::::::::::::::\e[0m\n\n"
 			subfinder -all -silent -recursive -nW -o hfscan_subdomains.subfinder -d $2
@@ -262,7 +265,7 @@ case "$TheFather_Of_The_G0ds_Kirito" in
 
 		verify httpx
 		if [ $# -ne 2 ];then
-			printf "\n$0 $TheFather_Of_The_G0ds_Kirito [targets-wordlist]\n\n"
+			printf "\n$prog_name $TheFather_Of_The_G0ds_Kirito [targets-wordlist]\n\n"
 			exit 1
 		elif [ ! -f $2 ];then
 			printf "\n\e[1;31mERROR:\e[0m targets-wordlist not found!\n\n"
@@ -278,15 +281,15 @@ case "$TheFather_Of_The_G0ds_Kirito" in
 
 			verify ffuf
 			if [ "$2" == "" ];then
-				printf "\n$0 $TheFather_Of_The_G0ds_Kirito (discovery / brute)\n\n"
+				printf "\n$prog_name $TheFather_Of_The_G0ds_Kirito (discovery / brute)\n\n"
 				exit 1
 			elif [[ "$2" == "DISCOVERY" || "$2" == "discovery" ]];then
 				if [ $# -ne 6 ];then
-					printf "\n$0 $TheFather_Of_The_G0ds_Kirito $2 (GET/POST) ./parameters-list.txt https://hackingforce.com.br/upload.php (blind/default)\n
+					printf "\n$prog_name $TheFather_Of_The_G0ds_Kirito $2 (GET/POST) ./parameters-list.txt https://hackingforce.com.br/upload.php (blind/default)\n
 {example}
 
-	$0 $TheFather_Of_The_G0ds_Kirito $2 POST ./parameters-list.txt https://hackingforce.com.br/painel.php BLIND
-	$0 $TheFather_Of_The_G0ds_Kirito $2 GET ./parameters-list.txt https://hackingforce.com.br/upload.php DEFAULT
+	$prog_name $TheFather_Of_The_G0ds_Kirito $2 POST ./parameters-list.txt https://hackingforce.com.br/painel.php BLIND
+	$prog_name $TheFather_Of_The_G0ds_Kirito $2 GET ./parameters-list.txt https://hackingforce.com.br/upload.php DEFAULT
 \n"
 					exit 1
 				else
@@ -506,10 +509,10 @@ case "$TheFather_Of_The_G0ds_Kirito" in
 			elif [[ "$2" == "BRUTE" || "$2" == "brute" ]];then
 
 				if [ $# -ne 6 ];then
-					printf "\n$0 $TheFather_Of_The_G0ds_Kirito $2 (GET/POST) (PARAMETER) ./pathTransversal-CommandExec-list.txt https://hackingforce.com.br/dev.php\n
+					printf "\n$prog_name $TheFather_Of_The_G0ds_Kirito $2 (GET/POST) (PARAMETER) ./pathTransversal-CommandExec-list.txt https://hackingforce.com.br/dev.php\n
 {example}
 
-	$0 $TheFather_Of_The_G0ds_Kirito $2 POST 'share' ./pathTransversal-CommandExec-list.txt https://hackingforce.com.br/dev.php
+	$prog_name $TheFather_Of_The_G0ds_Kirito $2 POST 'share' ./pathTransversal-CommandExec-list.txt https://hackingforce.com.br/dev.php
 \n"
 					exit 1
 				else
