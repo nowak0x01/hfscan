@@ -3,7 +3,7 @@
 ############################## Gr33tz: R3tr0 | Kirito
 # */ script author: nowak */ #
 # */  the recon is a art  */ # /* https://discord.gg/PePM2NR5zS ~/
-#    */   v1.2.6-dev   /*    # /~ https://github.com/nowak0x01 */
+#    */   v1.2.7-dev   /*    # /~ https://github.com/nowak0x01 */
 # $/  hackingforce family #/ #
 ##############################
 
@@ -12,6 +12,8 @@ TheMan_TheBeast_HeIs_R3tr074=$6
 
 # regex to clean "/" and "."
 prog_name=${0##*/}
+
+
 
 HELP="
 $prog_name ({program}) ({options})
@@ -51,9 +53,11 @@ case "$TheFather_Of_The_G0ds_Kirito" in
 		# [ DEFAULT ] - EXTENSIONS='.yml,.yaml,.passwd,.conf,.php,.js,.html,.save,.swp,.bkp,.bak,.sql,.db,.ovpn,.md,.env,~,.json,.old,.log,.tar,.tar.gz,.gz,.tgz,.settings,.zip,.rar,.backup,.out,.info,.main,.master,.local,.inf,.git,.disabled,.dev,.default,.cnf,.cgi,.cer,.bin,.tmp,.temp'
 		# [ ASP.NET/IIS ] - EXTENSIONS='.asp,.aspx,.cfg,.config,.zip,.xml,.svn,.svnignore,.web,.dll,.exe,.wasm,.wadl,.axd,.resx,.resouces,.wsdl,.xsd,.disco,.discomap,.config,.htm,.pdb,.ashx,.cs,.sln,.asax'
 		# [ JAVA ] - EXTENSIONS='.jsp,.jsf,.xhtml,.xml,.class,.java,.jar,.seam,.faces,.shtml,.ifaces,.do,.action,.jspf,.properties'
+		# [ COMMON ] - EXTENSIONS='.php,.js,.html,.swp,.db,.md,~,.json,.sql,.py,.css'
 
 		THREADS='110'
-		EXTENSIONS='.passwd,.conf,.php,.js,.html,.save,.swp,.bkp,.bak,.sql,.db,.ovpn,.md,.env,~,.json,.old,.log,.tar,.tar.gz,.gz,.tgz,.settings,.zip,.rar,.backup,.out,.info,.main,.master,.local,.inf,.git,.disabled,.dev,.default,.cnf,.cgi,.cer,.bin,.tmp,.temp'
+		#EXTENSIONS='.passwd,.conf,.php,.js,.html,.save,.swp,.bkp,.bak,.sql,.db,.ovpn,.md,.env,~,.json,.old,.log,.tar,.tar.gz,.gz,.tgz,.settings,.zip,.rar,.backup,.out,.info,.main,.master,.local,.inf,.git,.disabled,.dev,.default,.cnf,.cgi,.cer,.bin,.tmp,.temp'
+		EXTENSIONS='.php,.js,.html,.swp,.db,.md,~,.json,.sql,.py,.css'
 		UAGENT='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36 OPR/81.0.4196.60'
 
 		if [[ "$2" == "DIR" || "$2" == "dir" ]];then
@@ -83,7 +87,7 @@ case "$TheFather_Of_The_G0ds_Kirito" in
 
 			SYN_scan="-sSVC -Pn -T4 --min-rate 10000 -p-"
 			TCP_scan="-sTVC -Pn -T4 --min-rate 10000 -p-"
-			UDP_scan="-sUV -Pn -T4 --min-rate 10000 -p-"
+			UDP_scan="-sU -Pn -T4 --min-rate 10000 -p-"
 
 			printf "\n\e[1;37m=> starting the scan \e[1;32m(CTF - syn) \e[1;37m<=\n\n"
 			nmap $SYN_scan $3
@@ -96,7 +100,7 @@ case "$TheFather_Of_The_G0ds_Kirito" in
 
 			SYN_scan="-sS -Pn -T2 -D RND:126 -g 80 -p-"
 			TCP_scan="-sT -Pn -T2 -D RND:126 -g 80 -p-"
-			UDP_scan="-sUV -Pn -T2 -D RND:126 -g 80 -p-"
+			UDP_scan="-sU -Pn -T2 -D RND:126 -g 80"
 
 			printf "\n\e[1;37m=> starting the scan \e[1;32m(WORLD - syn) \e[1;37m<=\n\n"
 			nmap $SYN_scan $3
@@ -543,6 +547,7 @@ case "$TheFather_Of_The_G0ds_Kirito" in
 			;;
 
 	*)
+		printf 'ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBfLi4uXyAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgLi0nXy4uLl8nJy4gICAgICAgICAgICAgICAgICAgICAgIAogICAuICAgICAgICAgICAgICAgICAgICAgICAgICAuJyAuJyAgICAgICcuXCAgICAgICAgICAgICBfLi4uXyAgICAKIC4nfCAgICAgICAgICAgICBfLi5fICAgICAgICAvIC4nICAgICAgICAgICAgICAgICAgICAgIC4nICAgICAnLiAgCjwgIHwgICAgICAgICAgIC4nIC4uX3wgICAgICAuICcgICAgICAgICAgICAgICAgICAgICAgIC4gICAuLS4gICAuIAogfCB8ICAgICAgICAgICB8ICcgICAgICAgICAgfCB8ICAgICAgICAgICAgICAgICBfXyAgICB8ICAnICAgJyAgfCAKIHwgfCAuJycnLS4gIF9ffCB8X18gICAgIF8gIHwgfCAgICAgICAgICAgICAgLjotLS4nLiAgfCAgfCAgIHwgIHwgCiB8IHwvLicnJy4gXHxfXyAgIF9ffCAgLicgfCAuICcgICAgICAgICAgICAgLyB8ICAgXCB8IHwgIHwgICB8ICB8IAogfCAgLyAgICB8IHwgICB8IHwgICAgLiAgIHwgL1wgJy4gICAgICAgICAgLmAiIF9fIHwgfCB8ICB8ICAgfCAgfCAKIHwgfCAgICAgfCB8ICAgfCB8ICAuJy4nfCB8Ly8gJy4gYC5fX19fXy4tJy8gLicuJyd8IHwgfCAgfCAgIHwgIHwgCiB8IHwgICAgIHwgfCAgIHwgfC4nLicuLScgIC8gICAgYC0uX19fX19fIC8gLyAvICAgfCB8X3wgIHwgICB8ICB8IAogfCAnLiAgICB8ICcuICB8IHwuJyAgIFxfLicgICAgICAgICAgICAgIGAgIFwgXC5fLFwgJy98ICB8ICAgfCAgfCAKICctLS0nICAgJy0tLScgfF98ICAgICAgICAgICAgICAgICAgICAgICAgICAgYC0tJyAgYCIgJy0tJyAgICctLScgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAo=' | base64 -d
 		printf "$HELP"
 		exit 1
 		;;
