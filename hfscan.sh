@@ -53,11 +53,10 @@ case "$TheFather_Of_The_G0ds_Kirito" in
 		# [ DEFAULT ] - EXTENSIONS='.yml,.yaml,.passwd,.conf,.php,.js,.html,.save,.swp,.bkp,.bak,.sql,.db,.ovpn,.md,.env,~,.json,.old,.log,.tar,.tar.gz,.gz,.tgz,.settings,.zip,.rar,.backup,.out,.info,.main,.master,.local,.inf,.git,.disabled,.dev,.default,.cnf,.cgi,.cer,.bin,.tmp,.temp'
 		# [ ASP.NET/IIS ] - EXTENSIONS='.asp,.aspx,.cfg,.config,.zip,.xml,.svn,.svnignore,.web,.dll,.exe,.wasm,.wadl,.axd,.resx,.resouces,.wsdl,.xsd,.disco,.discomap,.config,.htm,.pdb,.ashx,.cs,.sln,.asax'
 		# [ JAVA ] - EXTENSIONS='.jsp,.jsf,.xhtml,.xml,.class,.java,.jar,.seam,.faces,.shtml,.ifaces,.do,.action,.jspf,.properties'
-		# [ COMMON ] - EXTENSIONS='.php,.js,.html,.swp,.db,.md,~,.json,.sql,.py,.css'
+		# [ COMMON ] - EXTENSIONS='.php,.js,.html,.swp,.db,.md,~,.json,.sql'
 
 		THREADS='110'
-		#EXTENSIONS='.passwd,.conf,.php,.js,.html,.save,.swp,.bkp,.bak,.sql,.db,.ovpn,.md,.env,~,.json,.old,.log,.tar,.tar.gz,.gz,.tgz,.settings,.zip,.rar,.backup,.out,.info,.main,.master,.local,.inf,.git,.disabled,.dev,.default,.cnf,.cgi,.cer,.bin,.tmp,.temp'
-		EXTENSIONS='.php,.js,.html,.swp,.db,.md,~,.json,.sql,.py,.css'
+		EXTENSIONS='.php,.js,.html,.swp,.db,.md,~,.json,.sql'
 		UAGENT='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36 OPR/81.0.4196.60'
 
 		if [[ "$2" == "DIR" || "$2" == "dir" ]];then
