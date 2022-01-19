@@ -3,7 +3,7 @@
 ############################## Gr33tz: R3tr0 | Kirito
 # */ script author: nowak */ #
 # */  the recon is a art  */ # /* https://discord.gg/PePM2NR5zS ~/
-#    */   v1.2.7-dev   /*    # /~ https://github.com/nowak0x01 */
+#    */   v1.2.8-dev   /*    # /~ https://github.com/nowak0x01 */
 # $/  hackingforce family #/ #
 ##############################
 
@@ -30,7 +30,7 @@ $prog_name ({program}) ({options})
 \n"
 
 export HOME=$(grep $USER /etc/passwd | cut -d':' -f6)
-export PATH="/opt:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:${HOME}/go:${HOME}/local:${HOME}:$PATH"
+export PATH="/opt:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:${HOME}/go:${HOME}/.local:${HOME}:$PATH"
 
 verify()
 {
@@ -53,24 +53,24 @@ case "$TheFather_Of_The_G0ds_Kirito" in
 		# [ DEFAULT ] - EXTENSIONS='.yml,.yaml,.passwd,.conf,.php,.js,.html,.save,.swp,.bkp,.bak,.sql,.db,.ovpn,.md,.env,~,.json,.old,.log,.tar,.tar.gz,.gz,.tgz,.settings,.zip,.rar,.backup,.out,.info,.main,.master,.local,.inf,.git,.disabled,.dev,.default,.cnf,.cgi,.cer,.bin,.tmp,.temp'
 		# [ ASP.NET/IIS ] - EXTENSIONS='.asp,.aspx,.cfg,.config,.zip,.xml,.svn,.svnignore,.web,.dll,.exe,.wasm,.wadl,.axd,.resx,.resouces,.wsdl,.xsd,.disco,.discomap,.config,.htm,.pdb,.ashx,.cs,.sln,.asax'
 		# [ JAVA ] - EXTENSIONS='.jsp,.jsf,.xhtml,.xml,.class,.java,.jar,.seam,.faces,.shtml,.ifaces,.do,.action,.jspf,.properties'
-		# [ COMMON ] - EXTENSIONS='.php,.js,.html,.swp,.db,.md,~,.json,.sql'
+		# [ COMMON ] - EXTENSIONS='.php,.js,.html,.swp,.db,.md,~,.json,.sql,.py,.css'
 
 		THREADS='110'
-		EXTENSIONS='.php,.js,.html,.swp,.db,.md,~,.json,.sql'
+		EXTENSIONS='.php,.js,.html,.swp,.db,.md,~,.json,.sql,.py,.css'
 		UAGENT='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36 OPR/81.0.4196.60'
 
 		if [[ "$2" == "DIR" || "$2" == "dir" ]];then
 
 			printf "\n\e[1;37m=> TARGET:\e[1;32m $4 \e[1;37m| METHOD:\e[1;32m (DIRECTORIES) \e[1;37m| THREADS:\e[1;32m $THREADS \e[1;37m<=\e[0m\n\n"
-			ffuf -ic -recursion -w $3 -u $4 -H "User-Agent: $UAGENT" -c -t $THREADS --timeout 16 -mc all -ac "${@:5}"
+			ffuf -ic -recursion -w $3 -u $4 -H "User-Agent: $UAGENT" -c -t $THREADS --timeout 16 -mc all "${@:5}"
 
 		elif [[ "$2" == "files" || "$2" == "FILES" ]];then
 
 			printf "\n\e[1;37m=> TARGET:\e[1;32m $4 \e[1;37m| METHOD:\e[1;32m (FILES-DEFAULT) \e[1;37m| THREADS:\e[1;32m $THREADS \e[1;37m<=\e[0m\n\n"
-			ffuf -ic -w $3 -u $4 -H "User-Agent: $UAGENT" -c -e "$EXTENSIONS" -t $THREADS --timeout 16 -mc all -ac "${@:5}"
+			ffuf -ic -w $3 -u $4 -H "User-Agent: $UAGENT" -c -e "$EXTENSIONS" -t $THREADS --timeout 16 -mc all "${@:5}"
 			cut -d'.' -f1 $3 | sort -u > /var/tmp/hfscan-files.txt
 			printf "\n\e[1;37m=> TARGET:\e[1;32m $4 \e[1;37m| METHOD:\e[1;32m (FILES-CHANGED) \e[1;37m| THREADS:\e[1;32m $THREADS \e[1;37m<=\e[0m\n\n"
-			ffuf -ic -w /var/tmp/hfscan-files.txt -u $4 -H "User-Agent: $UAGENT" -c -e "$EXTENSIONS" -t $THREADS --timeout 16 -mc all -ac "${@:5}"
+			ffuf -ic -w /var/tmp/hfscan-files.txt -u $4 -H "User-Agent: $UAGENT" -c -e "$EXTENSIONS" -t $THREADS --timeout 16 -mc all "${@:5}"
 		fi
 		;;
 
@@ -78,7 +78,7 @@ case "$TheFather_Of_The_G0ds_Kirito" in
 
 		verify nmap
 		if [ "$3" == "" ];then
-			printf "\n$prog_name %s (ctf/world) (target)\n\n" "$TheFather_Of_The_G0ds_Kirito"
+			printf "\n$prog_name %s (ctf/world) (target) +more options+\n\n" "$TheFather_Of_The_G0ds_Kirito"
 			exit 1
 		fi
 
@@ -86,27 +86,33 @@ case "$TheFather_Of_The_G0ds_Kirito" in
 
 			SYN_scan="-sSVC -Pn -T4 --min-rate 10000 -p-"
 			TCP_scan="-sTVC -Pn -T4 --min-rate 10000 -p-"
-			UDP_scan="-sU -Pn -T4 --min-rate 10000 -p-"
+			UDP_scan="-sUV -Pn -T4 --min-rate 10000"
+			CTF_INIT_TCP_scan="-sTVC -Pn -T4 --min-rate 10000"
+			CTF_INIT_SYN_scan="-sSVC -Pn -T4 --min-rate 10000"
 
+			printf "\n\e[1;37m=> starting the scan \e[1;32m(CTF - syn [1000-ports] ) \e[1;37m<=\n\n"
+			nmap $CTF_INIT_SYN_scan $3 "${@:4}"
+			printf "\n\e[1;37m=> starting the scan \e[1;32m(CTF - tcp [1000-ports] ) \e[1;37m<=\n\n"
+			nmap $CTF_INIT_TCP_scan $3 "${@:4}"
 			printf "\n\e[1;37m=> starting the scan \e[1;32m(CTF - syn) \e[1;37m<=\n\n"
-			nmap $SYN_scan $3
+			nmap $SYN_scan $3 "${@:4}"
 			printf "\n\e[1;37m=> starting the scan \e[1;32m(CTF - tcp) \e[1;37m<=\n\n"
-			nmap $TCP_scan $3
+			nmap $TCP_scan $3 "${@:4}"
 			printf "\n\e[1;37m=> starting the scan \e[1;32m(CTF - udp) \e[1;37m<=\n\n"
-			nmap $UDP_scan $3
+			nmap $UDP_scan $3 "${@:4}"
 
 		elif [[ "$2" == "world" || "$2" == "WORLD" ]];then
 
-			SYN_scan="-sS -Pn -T2 -D RND:126 -g 80 -p-"
-			TCP_scan="-sT -Pn -T2 -D RND:126 -g 80 -p-"
-			UDP_scan="-sU -Pn -T2 -D RND:126 -g 80"
+			SYN_scan="-sS -Pn -T2 -D RND:126 -g 68 -S 127.0.0.1"
+			TCP_scan="-sT -Pn -T2 -D RND:126 -g 68 -S 127.0.0.1"
+			UDP_scan="-sU -Pn -T2 -g 68 -S 127.0.0.1"
 
 			printf "\n\e[1;37m=> starting the scan \e[1;32m(WORLD - syn) \e[1;37m<=\n\n"
-			nmap $SYN_scan $3
+			nmap $SYN_scan $3 "${@:4}"
 			printf "\n\e[1;37m=> starting the scan \e[1;32m(WORLD - tcp) \e[1;37m<=\n\n"
-			nmap $TCP_scan $3
+			nmap $TCP_scan $3 "${@:4}"
 			printf "\n\e[1;37m=> starting the scan \e[1;32m(WORLD - udp) \e[1;37m<=\n\n"
-			nmap $UDP_scan $3
+			nmap $UDP_scan $3 "${@:4}"
 		fi
 		;;
 
@@ -263,7 +269,7 @@ case "$TheFather_Of_The_G0ds_Kirito" in
 			printf "\n\e[1;32m:::::::::::::::::::::::::::::::::::::::\e[0m\n\n"
 		fi
 		;;
-		
+
 	'web-tecnology'|'web'|'WEB'|'WEB-TECNOLOGY'|'httpx'|'HTTPX')
 
 		verify httpx
